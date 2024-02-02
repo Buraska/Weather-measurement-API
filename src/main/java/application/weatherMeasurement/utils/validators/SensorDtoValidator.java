@@ -1,4 +1,4 @@
-package application.weatherMeasurement.utils;
+package application.weatherMeasurement.utils.validators;
 
 import application.weatherMeasurement.dto.SensorDto;
 import application.weatherMeasurement.services.SensorService;
@@ -28,8 +28,7 @@ public class SensorDtoValidator implements Validator {
     public void validate(Object target, Errors errors) {
         SensorDto sensorDto = (SensorDto) target;
 
-        var DbSensor = service.findByName(sensorDto.getName());
-        if (DbSensor.isPresent()){
+        if (service.isPresent(sensorDto.getName())){
             errors.rejectValue("name", "That name is already taken.");
         }
     }

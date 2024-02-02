@@ -31,4 +31,7 @@ public class SensorService {
     public Optional<Sensor> findByName(String sensorName){
         return repository.findByName(sensorName);
     }
+    public boolean isPresent(String sensorName){
+        return repository.findByName(sensorName).isPresent();
+    }
 }

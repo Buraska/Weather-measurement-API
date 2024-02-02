@@ -1,11 +1,19 @@
 package application.weatherMeasurement.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Measurement {
 
     @Id
@@ -14,6 +22,8 @@ public class Measurement {
     private Long id;
 
     @NotNull
+    @Min(-100)
+    @Max(100)
     private Float value;
 
     @NotNull
@@ -23,6 +33,7 @@ public class Measurement {
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp timestamp;
     @ManyToOne
+    @NotNull
     @JoinColumn(referencedColumnName = "id", name = "sensor_id")
     private Sensor sensor;
 }

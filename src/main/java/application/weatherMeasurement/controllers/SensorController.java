@@ -1,11 +1,11 @@
 package application.weatherMeasurement.controllers;
 
 import application.weatherMeasurement.models.Sensor;
-import application.weatherMeasurement.utils.SensorDtoValidator;
+import application.weatherMeasurement.utils.validators.SensorDtoValidator;
 import application.weatherMeasurement.dto.SensorDto;
 import application.weatherMeasurement.services.SensorService;
 import application.weatherMeasurement.utils.exceptions.SensorCannotBeCreated;
-import application.weatherMeasurement.utils.exceptions.SensorErrorResponse;
+import application.weatherMeasurement.utils.responses.ErrorResponse;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpEntity;
@@ -37,7 +37,7 @@ public class SensorController {
         validator.validate(sensorDto, bindingResult);
         if (bindingResult.hasErrors()){
             var errors = bindingResult.getAllErrors();
-            throw new SensorCannotBeCreated(Arrays.toString(errors.toArray()));
+                throw new SensorCannotBeCreated(Arrays.toString(errors.toArray()));
         }
 
         service.save(mapper.map(sensorDto, Sensor.class));
@@ -46,8 +46,8 @@ public class SensorController {
     }
 
     @ExceptionHandler
-    private ResponseEntity<SensorErrorResponse> handleException(SensorCannotBeCreated e){
-        var response = new SensorErrorResponse(e.getMessage(), new Timestamp(System.currentTimeMillis()));
+    private ResponseEntity<ErrorResponse> handleException(SensorCannotBeCreated e){
+        var response = new ErrorResponse(e.getMessage(), new Timestamp(System.currentTimeMillis()));
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
